@@ -1,4 +1,4 @@
-package adventurer;
+package adventurer.geometry;
 
 public class Point {
     public int x;

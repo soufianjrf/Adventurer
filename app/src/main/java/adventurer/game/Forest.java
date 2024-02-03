@@ -6,6 +6,8 @@ import java.nio.file.Paths;
 import java.util.List;
 
 public class Forest {
+
+    // The map of the forest, where '#' is a tree
     public char[][] map;
 
     public Forest(String filePath) {
@@ -30,11 +32,18 @@ public class Forest {
     }
 
     @Override
+    // Showing the map on the console
     public String toString() {
+        String RESET = "\u001B[0m";
+        String GREEN = "\u001B[32m";
         String stringValue = "";
-        for (int i = 0; i < this.map.length; i++) {
-            for (int j = 0; j < this.map[i].length; j++) {
-                stringValue += this.map[i][j];
+        for (int i = 0; i < map.length; i++) {
+            for (int j = 0; j < map[i].length; j++) {
+                if (map[i][j] == '#') {
+                    stringValue += GREEN + "#" + RESET + ",";
+                } else {
+                    stringValue += map[i][j] + ",";
+                }
             }
             stringValue += '\n';
         }

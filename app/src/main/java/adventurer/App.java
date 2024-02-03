@@ -5,19 +5,19 @@ package adventurer;
 
 import adventurer.game.Adventurer;
 import adventurer.game.Forest;
+import adventurer.geometry.Point;
 
 public class App {
-    public String getGreeting() {
-        return "Hello World!";
-    }
 
     public static void main(String[] args) {
-        // System.out.println(new App().getGreeting());
-        Forest forest = new Forest("carte.txt");
-        Adventurer hero = new Adventurer(3, 0);
-        hero.advance(forest, "SSSSEEEEEENN");
-        System.out.println(hero.coordinates);
 
-        // System.out.println(forest);
+        Forest forest = new Forest("carte.txt");
+
+        Adventurer hero = new Adventurer(3, 0, forest);
+
+        // hero.advance("SSSSEEEEEENN");
+        // System.out.println(hero.coordinates);
+
+        System.out.println(hero);
     }
 }

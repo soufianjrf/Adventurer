@@ -5,23 +5,42 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import adventurer.Point;
+import adventurer.exceptions.InvalidPositionException;
+import adventurer.geometry.Point;
 
 public class Adventurer {
 
+    // The position of the adventurer
     public Point coordinates;
 
-    public Adventurer(Point initialPosition) {
-        this.coordinates = new Point(initialPosition);
+    // The forest where he will be
+    public Forest forest;
+
+    public Adventurer(Point initialPosition, Forest forest) {
+        this.forest = forest;
+
+        int x = initialPosition.getX(), y = initialPosition.getY();
+
+        if (y < 0 || y >= forest.map.length) {
+            throw new InvalidPositionException("Coordinate x out of forest range");
+        } else if (x < 0 || x >= forest.map[y].length) {
+            throw new InvalidPositionException("Coordinate y out of forest range");
+        } else if (forest.map[y][x] == '#') {
+            throw new InvalidPositionException("The initial position in the forest is occupied by a tree");
+        }
+        this.coordinates = initialPosition;
     }
 
-    public Adventurer(int x, int y) {
-        this.coordinates = new Point(x, y);
+    public Adventurer(int x, int y, Forest forest) {
+        this(new Point(x, y), forest);
     }
 
-    public boolean canAdvance(Forest forest, char direction) {
+    // returns true if there is no obstacle, false otherwise
+    public boolean canAdvance(char direction) {
         int x = this.coordinates.x, y = this.coordinates.y;
         boolean result = true;
+
+        // Depending on the direction, we check the availability of the next position
         switch (direction) {
             case 'O':
                 if (x == 0 || forest.map[y][x - 1] == '#') {
@@ -47,7 +66,9 @@ public class Adventurer {
         return result;
     }
 
-    public void advance(Forest map, String directions) {
+    // moves the adventurer into his new position, avoiding obstacles
+    public void advance(String directions) {
+
         Map<Character, List<Integer>> coordinateUpdates = new HashMap<>();
         coordinateUpdates.put('N', Arrays.asList(0, -1));
         coordinateUpdates.put('S', Arrays.asList(0, 1));
@@ -55,31 +76,39 @@ public class Adventurer {
         coordinateUpdates.put('O', Arrays.asList(-1, 0));
 
         for (char direction : directions.toCharArray()) {
-            System.out.println(this.coordinates);
-            System.out.println(direction);
-            System.out.println("can advance : " + this.canAdvance(map, direction));
-            if (this.canAdvance(map, direction)) {
-                int newX = this.coordinates.getX() + coordinateUpdates.get(direction).get(0);
-                int newY = this.coordinates.getY() + coordinateUpdates.get(direction).get(1);
+            // Code for debugging
+            // System.out.println(this.coordinates);
+            // System.out.println(direction);
+            // System.out.println("can advance : " + this.canAdvance(direction));
+            if (this.canAdvance(direction)) {
+                int newX = coordinates.getX() + coordinateUpdates.get(direction).get(0);
+                int newY = coordinates.getY() + coordinateUpdates.get(direction).get(1);
 
-                this.coordinates.setX(newX);
-                this.coordinates.setY(newY);
-                // switch (direction) {
-                // case 'N':
-                // this.coordinates.setY(this.coordinates.getY() - 1);
-                // break;
-                // case 'S':
-                // this.coordinates.setY(this.coordinates.getY() + 1);
-                // break;
-                // case 'E':
-                // this.coordinates.setX(this.coordinates.getX() + 1);
-                // break;
-                // case 'O':
-                // this.coordinates.setX(this.coordinates.getX() - 1);
-                // break;
-                // }
+                coordinates.setX(newX);
+                coordinates.setY(newY);
             }
         }
     }
 
+    @Override
+    // Prints the map with our adventurer standing there, marking a red X
+    public String toString() {
+        String RESET = "\u001B[0m";
+        String RED = "\u001B[31m";
+        String GREEN = "\u001B[32m";
+        String stringValue = "";
+        for (int i = 0; i < forest.map.length; i++) {
+            for (int j = 0; j < forest.map[i].length; j++) {
+                if (i == coordinates.getY() && j == coordinates.getX()) {
+                    stringValue += RED + "X" + RESET + ",";
+                } else if (forest.map[i][j] == '#') {
+                    stringValue += GREEN + "#" + RESET + ",";
+                } else {
+                    stringValue += forest.map[i][j] + ",";
+                }
+            }
+            stringValue += '\n';
+        }
+        return stringValue;
+    }
 }
