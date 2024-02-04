@@ -22,9 +22,9 @@ public class Adventurer {
         int x = initialPosition.getX(), y = initialPosition.getY();
 
         if (y < 0 || y >= forest.map.length) {
-            throw new InvalidPositionException("Coordinate x out of forest range");
-        } else if (x < 0 || x >= forest.map[y].length) {
             throw new InvalidPositionException("Coordinate y out of forest range");
+        } else if (x < 0 || x >= forest.map[y].length) {
+            throw new InvalidPositionException("Coordinate x out of forest range");
         } else if (forest.map[y][x] == '#') {
             throw new InvalidPositionException("The initial position in the forest is occupied by a tree");
         }
@@ -94,9 +94,9 @@ public class Adventurer {
     // Prints the map with our adventurer standing there, marking a red X
     public String toString() {
         String RESET = "\u001B[0m";
-        String RED = "\u001B[31m";
+        String RED = "\u001B[31m\u001B[1m";
         String GREEN = "\u001B[32m";
-        String stringValue = "";
+        String stringValue = "X(" + coordinates.getX() + "," + coordinates.getY() + ")\n";
         for (int i = 0; i < forest.map.length; i++) {
             for (int j = 0; j < forest.map[i].length; j++) {
                 if (i == coordinates.getY() && j == coordinates.getX()) {

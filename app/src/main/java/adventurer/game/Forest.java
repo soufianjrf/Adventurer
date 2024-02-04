@@ -5,6 +5,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
+import adventurer.exceptions.InvalidForestFileException;
+
 public class Forest {
 
     // The map of the forest, where '#' is a tree
@@ -26,8 +28,7 @@ public class Forest {
                 i++;
             }
         } catch (Exception e) {
-            System.err.println("Error reading file: " + e.getMessage());
-            e.printStackTrace();
+            throw new InvalidForestFileException(e.getMessage());
         }
     }
 

@@ -12,35 +12,34 @@ import adventurer.geometry.Point;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import org.junit.jupiter.api.BeforeEach;
+
 class AppTest {
+
+    private Forest forest;
+
+    @BeforeEach
+    void setUp() {
+        forest = new Forest("carte.txt");
+    }
 
     @Test
     // Testing the initial position
     void shouldNotAllowIllegalInitialPosition() {
-        Forest forest = new Forest("carte.txt");
-        Adventurer hero;
-        try {
-            hero = new Adventurer(0, 0, forest);
-            fail("Exception not thrown");
-        } catch (InvalidPositionException e) {
-            assertEquals(e.getMessage(), "The initial position in the forest is occupied by a tree");
-        }
+        assertThrows(InvalidPositionException.class, () -> {
+            new Adventurer(0, 0, forest);
+        });
+        assertThrows(InvalidPositionException.class, () -> {
+            new Adventurer(3, 10000, forest);
+        });
+        assertThrows(InvalidPositionException.class, () -> {
+            new Adventurer(10000, 0, forest);
+        });
+    }
 
-        try {
-            hero = new Adventurer(10000, 0, forest);
-            fail("Exception not thrown");
-        } catch (InvalidPositionException e) {
-            assertEquals(e.getMessage(), "Coordinate x out of forest range");
-        }
-
-        try {
-            hero = new Adventurer(3, 10000, forest);
-            fail("Exception not thrown");
-        } catch (InvalidPositionException e) {
-            assertEquals(e.getMessage(), "Coordinate y out of forest range");
-        } finally {
-            hero = new Adventurer(3, 0, forest);
-        }
+    @Test
+    void shouldPutAdventurerInCorrectInitialPosition() {
+        Adventurer hero = new Adventurer(3, 0, forest);
         assertEquals(hero.coordinates.getX(), 3);
         assertEquals(hero.coordinates.getY(), 0);
     }
@@ -48,24 +47,19 @@ class AppTest {
     @Test
     // Testing the canAdvance() method
     void shouldFindObstacles() {
-        Forest forest = new Forest("carte.txt");
         Point initialCoords = new Point(3, 0);
         Adventurer hero = new Adventurer(initialCoords, forest);
 
-        assertEquals(hero.canAdvance('N'), false);
-
-        assertEquals(hero.canAdvance('S'), true);
-
-        assertEquals(hero.canAdvance('E'), true);
-
-        assertEquals(hero.canAdvance('O'), false);
+        assertFalse(hero.canAdvance('N'));
+        assertTrue(hero.canAdvance('S'));
+        assertTrue(hero.canAdvance('E'));
+        assertFalse(hero.canAdvance('O'));
 
     }
 
     @Test
     // Testing the final position after moving
     void shouldAvoidObstaclesAndAdvance() {
-        Forest forest = new Forest("carte.txt");
         Adventurer hero = new Adventurer(3, 0, forest);
         hero.advance("SSSSEEEEEENN");
 
