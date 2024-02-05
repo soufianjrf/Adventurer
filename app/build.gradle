@@ -11,6 +11,14 @@ plugins {
     id 'application'
 }
 
+jar {
+    manifest {
+        attributes(
+                'Main-Class': 'adventurer.App'
+        )
+    }
+}
+
 repositories {
     // Use Maven Central for resolving dependencies.
     mavenCentral()
@@ -27,6 +35,8 @@ dependencies {
 application {
     // Define the main class for the application.
     mainClass = 'adventurer.App'
+    archivesBaseName = 'adventurer'
+    version = '1.0-SNAPSHOT'
 }
 
 tasks.named('test') {
