@@ -40,8 +40,8 @@ class AppTest {
     @Test
     void shouldPutAdventurerInCorrectInitialPosition() {
         Adventurer hero = new Adventurer(3, 0, forest);
-        assertEquals(hero.coordinates.getX(), 3);
-        assertEquals(hero.coordinates.getY(), 0);
+        assertEquals(hero.getCoordinates().getX(), 3);
+        assertEquals(hero.getCoordinates().getY(), 0);
     }
 
     @Test
@@ -63,8 +63,8 @@ class AppTest {
         Adventurer hero = new Adventurer(3, 0, forest);
         hero.advance("SSSSEEEEEENN");
 
-        assertEquals(hero.coordinates.getX(), 9);
-        assertEquals(hero.coordinates.getY(), 2);
+        assertEquals(hero.getCoordinates().getX(), 9);
+        assertEquals(hero.getCoordinates().getY(), 2);
 
     }
 }

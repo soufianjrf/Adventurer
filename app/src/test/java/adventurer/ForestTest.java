@@ -24,11 +24,11 @@ public class ForestTest {
         });
         Forest forest = new Forest("carte.txt");
 
-        assertEquals(forest.map.length, 20);
-        assertEquals(forest.map[0].length, 20);
+        assertEquals(forest.getMap().length, 20);
+        assertEquals(forest.getMap()[0].length, 20);
         ;
-        assertEquals(forest.map[0][0], '#');
-        assertEquals(forest.map[5][5], ' ');
+        assertEquals(forest.getMap()[0][0], '#');
+        assertEquals(forest.getMap()[5][5], ' ');
 
     }
 

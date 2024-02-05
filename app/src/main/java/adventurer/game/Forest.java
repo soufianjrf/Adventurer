@@ -10,21 +10,19 @@ import adventurer.exceptions.InvalidForestFileException;
 public class Forest {
 
     // The map of the forest, where '#' is a tree
-    public char[][] map;
+    private char[][] map;
 
     public Forest(String filePath) {
 
+        // Reads a map from an external file
         Path path = Paths.get(filePath);
 
         try {
-
             List<String> lines = Files.readAllLines(path);
-
-            this.map = new char[lines.size()][];
-
+            map = new char[lines.size()][];
             int i = 0;
             for (String line : lines) {
-                this.map[i] = line.toCharArray();
+                map[i] = line.toCharArray();
                 i++;
             }
         } catch (Exception e) {
@@ -50,4 +48,13 @@ public class Forest {
         }
         return stringValue;
     }
+
+    public char[][] getMap() {
+        return this.map;
+    }
+
+    public void setMap(char[][] map) {
+        this.map = map;
+    }
+
 };
