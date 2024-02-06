@@ -5,19 +5,56 @@ package adventurer;
 
 import adventurer.game.Adventurer;
 import adventurer.game.Forest;
-import adventurer.geometry.Point;
 
 public class App {
 
     public static void main(String[] args) {
 
+        print("Hello and welcome to the Adventurer code !!");
+        print("We will test our app by placing a hero adventurer on the following map :");
+
         Forest forest = new Forest("carte.txt");
+        System.out.println(forest);
 
-        Adventurer hero = new Adventurer(3, 0, forest);
+        System.out.println("\u001B[31m\u001B[32m----------- FIRST TEST -----------\u001B[0m");
+        print("Our first hero will be placed in the position (x=3,y=0)");
 
-        // hero.advance("SSSSEEEEEENN");
-        // System.out.println(hero.coordinates);
+        Adventurer hero1 = new Adventurer(3, 0, forest);
+        System.out.println(hero1);
 
-        System.out.println(hero);
+        print("He will move in the following directions : SSSSEEEEEENN. He should end up in position(9,2)");
+        hero1.advance("SSSSEEEEEENN");
+        print("This is his final position : ");
+        System.out.println(hero1);
+
+        System.out.println("\u001B[31m\u001B[32m----------- SECOND TEST -----------\u001B[0m");
+        print("Our first hero will be placed in the position (x=6,y=7)");
+
+        Adventurer hero2 = new Adventurer(6, 7, forest);
+        System.out.println(hero2);
+
+        print("He will move in the following directions : OONOOOSSO. He should end up in position(1,9)");
+        hero2.advance("OONOOOSSO");
+        print("This is his final position : ");
+        System.out.println(hero2);
+
+        print("THE END !!!!!!! Thank you :)");
     }
+
+    public static void print(String text, int speed) {
+        for (char c : text.toCharArray()) {
+            System.out.print(c);
+            try {
+                Thread.sleep(speed);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        System.out.println("");
+    }
+
+    public static void print(String text) {
+        print(text, 75);
+    }
+
 }
